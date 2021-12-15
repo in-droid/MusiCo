@@ -23,7 +23,9 @@ def searchForArtist(artistName):
     searchBar.send_keys(artistName)
     searchBar.submit()
 
-    return driver.current_url
+    url = driver.current_url
+    driver.close()
+    return url
 
 
 # This function checks whether the given page is a Disambiguation page or real wikipedia page,
@@ -102,6 +104,7 @@ def ScrapePage(URL, albumList):
         return None
 
 
-# print(checkForArtist(['euforija'], searchForArtist('buc kesidi'))) #FOR TESTING
+
+print(checkForArtist(['45'], searchForArtist('kino'))) #FOR TESTING
 
 # To get the album list of the artist we call Ardit's spotify function first
