@@ -105,6 +105,6 @@ def ScrapePage(URL, albumList):
 
 
 
-print(checkForArtist(['45'], searchForArtist('kino'))) #FOR TESTING
+#print(checkForArtist(['45'], searchForArtist('kino'))) #FOR TESTING
 
 # To get the album list of the artist we call Ardit's spotify function first
