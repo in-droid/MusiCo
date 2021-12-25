@@ -95,7 +95,7 @@ def scrapeEventPage(URL):
     return eventPageDict
 
 
-# print(scrapeEventPage("https://www.songkick.com/concerts/40123872-pulcinella-at-cankarjev-dom")) #FOR TESTING
+#print(scrapeEventPage("https://www.songkick.com/concerts/40123872-pulcinella-at-cankarjev-dom")) #FOR TESTING
 
 # This function scraoes the venue pages for location and upcoming events
 # Returns a list of lists, each sublist contains [artist, date, link to event] in that order
@@ -118,4 +118,4 @@ def scrapeVenuePage(URL):
 
     return listings
 
-# print(scrapeVenuePage("https://www.songkick.com/venues/470056-kino-siska/")) #FOR TESTING
+#print(scrapeVenuePage("https://www.songkick.com/venues/470056-kino-siska/")) #FOR TESTING

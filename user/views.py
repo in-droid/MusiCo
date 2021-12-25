@@ -14,9 +14,9 @@ from user import serializers
 @api_view(['GET'])
 def index(request):
     response = {
-        "message" : "All paths accept and return only json",
+        "message" : "You are Loged in! All paths accept and return only json",
         "user/login/" : "username, password",
-        "user/register": "{username, password, password2}"
+        "user/register/": "{username, password, password2}"
     }
     return Response(response)
 
