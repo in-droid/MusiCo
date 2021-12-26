@@ -64,20 +64,24 @@ def findLocation(city, country):
 #                             tickets - link to ticket vendor website, if not available returns that instead
 #                             venueInfo - information on the venue street num city etc..
 #                             additionalInfo - extra info sometimes on the site like door opening hours and price
+#                             imgLink - link to the image of the artist performing
 def scrapeEventPage(URL):
 
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, "html.parser")
 
-    lineUpUnclean = soup.find('div', {'class': 'line-up'}).find_all('span')
-    lineUp = {}
-    for i in lineUpUnclean:
-        lineUp[i.text.strip()] = i.find('a')['href'] # add to dictionary artist in lineup and link to their page
+    try:
+        lineUpUnclean = soup.find('div', {'class': 'line-up'}).find_all('span')
+        lineUp = {}
+        for i in lineUpUnclean:
+            lineUp[i.text.strip()] = "https://www.songkick.com" + i.find('a')['href']  # add to dictionary artist in lineup and link to their page
+    except:
+        lineUp = None
 
     venueInfo = soup.find('p', {'class': 'venue-hcard'}).text.strip()
 
     try:
-        tickets = soup.find('div', {'id': 'tickets'}).find('a')['href'].strip()
+        tickets = "https://www.songkick.com" + soup.find('div', {'id': 'tickets'}).find('a')['href'].strip()
     except:
         tickets = "Tickets not available yet"
 
@@ -86,16 +90,22 @@ def scrapeEventPage(URL):
     except:
         additionalInfo = None
 
+    try:
+        imgLink = soup.find('div', {'class': 'profile-picture-wrapper'}).find('img')['data-src']
+    except:
+        imgLink = "majkati"
+
     eventPageDict = {
         'lineUp': lineUp,
         'tickets': tickets,
         'venueInfo': venueInfo,
-        'additionalInfo': additionalInfo
+        'additionalInfo': additionalInfo,
+        'imgLink': imgLink
     }
     return eventPageDict
 
 
-#print(scrapeEventPage("https://www.songkick.com/concerts/40123872-pulcinella-at-cankarjev-dom")) #FOR TESTING
+# print(scrapeEventPage("https://www.songkick.com/concerts/39559443-taake-at-orto")) #FOR TESTING
 
 # This function scraoes the venue pages for location and upcoming events
 # Returns a list of lists, each sublist contains [artist, date, link to event] in that order
@@ -104,8 +114,9 @@ def scrapeVenuePage(URL):
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, "html.parser")
 
-    eventsCount = soup.find('p', {'class': 'events-count'}).text.strip()
-    location = soup.find('p', {'class': 'venue-hcard'}).text.strip()
+    #These are probably not needed but iI'll leave them for now just in case
+    #eventsCount = soup.find('p', {'class': 'events-count'}).text.strip()
+    #location = soup.find('p', {'class': 'venue-hcard'}).text.strip()
 
     # go to calendar page of venue
     page = requests.get(URL+"/calendar")
@@ -114,8 +125,10 @@ def scrapeVenuePage(URL):
     listingsUnclean = soup.find('ul', {'class': 'event-listings'}).find_all('p', {'class': 'artists summary'})
     listings = []
     for i in listingsUnclean:
-        listings.append([i.text.strip(), i.parent['title'], i.parent.find('a')['href']])
+        isCanceled = i.parent.find('strong', {'class': 'item-state-tag canceled'})
+        if isCanceled is None:
+            listings.append([i.text.strip(), i.parent['title'], i.parent.find('a')['href']])
 
     return listings
 
-#print(scrapeVenuePage("https://www.songkick.com/venues/470056-kino-siska/")) #FOR TESTING
+# print(scrapeVenuePage("https://www.songkick.com/venues/57284-orto")) #FOR TESTING
