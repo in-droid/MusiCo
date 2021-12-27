@@ -6,11 +6,6 @@ import requests
 import base64
 import datetime
 from urllib.parse import urlencode
-from json import dumps
-from django.shortcuts import render
-
-#client_id = "b41f9e008ac94cf586a7825f224ba261"
-#client_secret = "28f67abb8a4448fc800b6cfe7d3e6ce6"
 
 
 class SpotifyAPI(object):
