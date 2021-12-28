@@ -134,6 +134,28 @@ class SpotifyAPI(object):
         data = r.json()
 
         return data["genres"]
+    
+     # note, works with a list as input and returns a list of values
+     def get_artists_popularity(self, names):
+        artists = []
+        for name in names:
+            self.verify_artist(name)
+            artist_id = self.get_artist_id(name)
+            artists.append(artist_id)
+
+        data = urlencode({"ids": ','.join(artists)})
+        lookup_url = f"https://api.spotify.com/v1/artists/?{data}"
+        header = self.generate_headers()
+
+        r = requests.get(lookup_url, headers=header)
+        data = r.json()
+        artists = data["artists"]
+
+        result = []
+        for artist in artists:
+            result.append(artist["popularity"])
+
+        return result
 
     def auth_curr_user(self, scope):
         """ https://github.com/plamere/spotipy """
