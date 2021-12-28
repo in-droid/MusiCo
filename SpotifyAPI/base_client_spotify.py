@@ -140,42 +140,6 @@ class SpotifyAPI(object):
 
         return spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
-    # get user's recently played tracks
-    def get_recently_played(self, limit=15):
-        sp = self.auth_curr_user("user-read-recently-played")
-        items = []
-
-        # dict_keys(['track', 'played_at', 'context'])
-        data = sp.current_user_recently_played(limit=limit)["items"]
-        for track in data:
-            item = {
-                "name": track["track"]["name"].encode("utf-8"),
-                "artist": track["track"]["artists"][0]["name"].encode("utf-8"),
-                "id": track["track"]["id"]
-            }
-            items.append(item)
-
-        return items
-
-    # get user's top tracks
-    # values for range: short_term, medium_term, long_term
-    def get_top_tracks(self, range="medium_term", limit=15):
-        sp = self.auth_curr_user("user-top-read")
-        items = []
-
-        data = sp.current_user_top_tracks(
-            limit=limit, time_range=range)["items"]
-
-        for track in data:
-            item = {
-                "name": track["name"].encode("utf-8"),
-                "artist": track["artists"][0]["name"].encode("utf-8"),
-                "id": track["id"]
-            }
-            items.append(item)
-
-        return items
-
     # get user's top artists
     # values for range: short_term, medium_term, long_term
     def get_top_artists(self, range="medium_term", limit=15):
@@ -204,7 +168,6 @@ class SpotifyAPI(object):
             "artist:" + name, "artist")["artists"]["items"][0]["images"][0]["url"]
 
     ############################## ZA KIRIL ##############################
-
     def get_artist_id(self, name):
         return self.search(
             "artist:" + name, "artist")["artists"]["items"][0]["id"]
