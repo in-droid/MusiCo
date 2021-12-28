@@ -49,7 +49,12 @@ class Recommender:
             index += 1
 
         df["score"] = scores
-        return (df.sort_values('score', ascending=False)["name"].values[:5])
+        results = df.sort_values('score', ascending=False)["name"].values
+        
+        if len(results) < 5:
+            return results
+        
+        return results[:5]
 
     def recommend(self):
         return self.get_scores(self.data, self.get_user_genres())
