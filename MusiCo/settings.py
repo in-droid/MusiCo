@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     "rest_framework.authtoken",
     'corsheaders',
+
+    'data.apps.DataConfig', # for the database
     
 ]
 
