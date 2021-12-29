@@ -34,6 +34,9 @@ class QueryDatabase:
         except:
             return 'Artist does not exist!'
 
+    def get_artist(self, aid):
+        return Artist.objects.get(id=id)
+
      # Get artist NAME by ID
     def get_artist_name(self, id):
         try:
@@ -87,6 +90,13 @@ class QueryDatabase:
             return [event.id for event in Event.objects.filter(aid=aid)]
         except:
             return 'Cannot find event for given artist!'
+
+
+    def get_event(self, eid):
+        try:
+            return Event.objects.get(id=eid)
+        except:
+            return 'Event does not exist!'
 
     # Get LINEUP for event by event ID
     def get_event_lineup(self, eid):
@@ -191,6 +201,12 @@ class QueryDatabase:
         except:
             return 'Location does not exist!'
 
+    def get_location_id_by_city(self, city):
+        try:
+            return Location.objects.get(city=city).id
+        except:
+            return 'Location does not exist!'
+
     # Get location CITY by location ID
     def get_location_city(self, id):
         try:
@@ -217,6 +233,12 @@ class QueryDatabase:
     def get_eventIDs_for_location(self, lid):
         try:
             return [event.id for event in Event.objects.filter(lid=lid)]
+        except:
+            return 'Location does not exist!'
+
+    def get_all_events_for_location(self, lid):
+        try:
+            return [event for event in Event.objects.all().filter(lid=lid)]
         except:
             return 'Location does not exist!'
 
