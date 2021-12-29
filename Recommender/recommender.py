@@ -1,4 +1,4 @@
-from SpotifyAPI import base_client
+from SpotifyAPI import SpotifyAPI
 import pandas as pd
 import math
 
@@ -50,10 +50,10 @@ class Recommender:
 
         df["score"] = scores
         results = df.sort_values('score', ascending=False)["name"].values
-        
+
         if len(results) < 5:
             return results
-        
+
         return results[:5]
 
     def recommend(self):

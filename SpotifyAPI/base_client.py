@@ -134,9 +134,9 @@ class SpotifyAPI(object):
         data = r.json()
 
         return data["genres"]
-    
+
      # note, works with a list as input and returns a list of values
-     def get_artists_popularity(self, names):
+    def get_artists_popularity(self, names):
         artists = []
         for name in names:
             self.verify_artist(name)
