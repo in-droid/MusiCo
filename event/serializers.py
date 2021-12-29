@@ -36,10 +36,10 @@ class VenueSerializerForEvent(serializers.Serializer):
 
 class EventSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
-    # venue = serializers.CharField(required=False, allow_blank=True, max_length=255)
     artist = ArtistSerializerForEvent(source="aid")
     date = serializers.DateField()
     venue = VenueSerializerForEvent(source="vid")
+    lineup = serializers.CharField(required=False, allow_blank=True, max_length=255)
     city = serializers.SerializerMethodField()
     country = serializers.SerializerMethodField()
     additional_info = serializers.CharField(required=False, allow_blank=True, max_length=255)
