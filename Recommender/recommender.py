@@ -1,4 +1,4 @@
-from base_client_spotify import SpotifyAPI
+from SpotifyAPI import base_client
 import pandas as pd
 import math
 
