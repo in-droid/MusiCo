@@ -10,6 +10,6 @@ All paths accept and return only json
 
 **EVENT**</br>
 -- event/(location) -> returns json of all events in that city </br>
--- event/(id) --> returns json for that artist </br>
+-- event/(id) --> returns json for that event </br>
   
  
