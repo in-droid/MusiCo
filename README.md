@@ -13,7 +13,7 @@ All paths accept and return only json
 -- event/(id) --> returns json for that event </br>
 
 **ARTIST**</br>
--- artist/ -> returns json list of all artists in database
--- artist/(id) -> returns details about that artist
+-- artist/ -> returns json list of all artists in database</br>
+-- artist/(id) -> returns details about that artist</br>
   
  
