@@ -2,12 +2,6 @@ from data.models import *
 from rest_framework import serializers
 
 
-class ArtistSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(required=False, allow_blank=True, max_length=255)
-    info = serializers.CharField(required=False, allow_blank=True, max_length=255)
-    img_link = serializers.CharField(required=False, allow_blank=True, max_length=255)
-    genre = serializers.CharField(required=False, allow_blank=True, max_length=255)
 
 
 class ArtistSerializerForEvent(serializers.Serializer):
