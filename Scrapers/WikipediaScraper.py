@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 # Afterwards we can use BeautifulSoup to scrape the page
 # because it's faster as it takes the html content directly instead of going through a browser
 def searchForArtist(artistName):
+    # Download driver and change DRIVER_PATH !!!
     DRIVER_PATH = 'C:/Users/tofil/Downloads/chromedriver_win32/chromedriver.exe'
     options = Options()
     options.headless = True

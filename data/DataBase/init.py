@@ -72,10 +72,10 @@ class InitDatabase:
                     img_links = []
                     for artist_name in lineup:
                         artist_info = WikipediaScraper.searchForArtist(artist_name)
-                        artist_img_link = base_client.spotify.get_artist_image(artist_name)
+                        artist_img_link = base_client.SpotifyAPI().get_artist_image(artist_name)
                         info.append(artist_info)
                         img_links.append(artist_img_link)
-                        genre_names = base_client.spotify.get_artists_genres(artist_name)
+                        genre_names = base_client.SpotifyAPI().get_artists_genres(artist_name)
 
                         for genre_name in genre_names:
                             if len(Genre.objects.filter(name=genre_name)) == 0:
@@ -97,9 +97,9 @@ class InitDatabase:
             else:
                 try:
                     artist_info = WikipediaScraper.searchForArtist(event.artist)
-                    artist_img_link = base_client.spotify.get_artist_image(event.artist)
+                    artist_img_link = base_client.SpotifyAPI().get_artist_image(event.artist)
                     self.__update_Artist(event.artist, artist_info, artist_img_link)
-                    genre_names = base_client.spotify.get_artists_genres(event.artist)
+                    genre_names = base_client.SpotifyAPI().get_artists_genres(event.artist)
                     
                     for genre_name in genre_names:
                         if (len(Genre.objects.filter(name=genre_name))) == 0:

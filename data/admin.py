@@ -18,11 +18,11 @@ admin.site.register(Location)
 # Uncomment down below
 
 # # Add items to list for more locations...
-countries = ['Slovenia']
-cities = ['Ljubljana']
+# countries = ['Slovenia']
+# cities = ['Ljubljana']
 
 
-#if database is empty:
-if len(Artist.objects.all()) == 0:
-     for city, country in zip(cities, countries):
-         init.InitDatabase(city, country)
+# #if database is empty:
+# if len(Artist.objects.all()) == 0:
+#      for city, country in zip(cities, countries):
+#          init.InitDatabase(city, country)
