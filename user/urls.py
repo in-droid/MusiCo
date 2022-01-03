@@ -14,5 +14,8 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('register/', views.register_users, name='register'),
     path('login/', views.login_user, name='login'),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('spotify-auth/', views.spotify_auth, name='spotify'),
+    path('spotify-callback/', views.spotify_callback, name='callback'),
+    path('spotify-is-auth/', views.is_spotify_auth, name='spotify-auth-check'),
+    path('profile/', views.my_profile, name='profile'),
 ]

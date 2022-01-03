@@ -65,6 +65,51 @@ class Artist_Genre(models.Model):
     aid = models.ForeignKey(Artist, on_delete=models.CASCADE)
     gid = models.ForeignKey(Genre, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('aid', 'gid',)
+
+
     def __str__(self):
         return str(self.aid)+' -- '+str(self.gid)
+
+
+class User_Genre(models.Model):
+    id = models.AutoField(primary_key=True)
+    uid = models.ForeignKey(User, on_delete=models.CASCADE)
+    gid = models.ForeignKey(Genre, on_delete=models.CASCADE)
+
+
+    class Meta:
+        unique_together = ('uid', 'gid',)
+
+    def __str__(self):
+        return str(self.uid) + ' -- ' + str(self.gid)
+
+
+class SpotifyToken(models.Model):
+    user = models.CharField(max_length=100, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    refresh_token = models.CharField(max_length=150)
+    access_token = models.CharField(max_length=150)
+    expires_in = models.DateTimeField()
+    token_type = models.CharField(max_length=50)
+
+    
+    
+    def __str__(self) -> str:
+        return str(self.user) + "---" + str(self.refresh_token) + "---" + str(self.expires_in)
+
+
+class User_Artist(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+
+
+    class Meta:
+        unique_together = ('user', 'artist',)
+
+    def __str__(self):
+        return str(self.user) + ' -- ' + str(self.artist)
+
 

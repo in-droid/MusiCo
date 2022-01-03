@@ -210,3 +210,29 @@ class SpotifyAPI(object):
             albums.append(album["name"])
 
         return albums
+
+"""
+scope = 'user-library-read'
+os.environ["SPOTIPY_CLIENT_ID"] = "b41f9e008ac94cf586a7825f224ba261"
+os.environ["SPOTIPY_CLIENT_SECRET"] = "28f67abb8a4448fc800b6cfe7d3e6ce6"
+os.environ["SPOTIPY_REDIRECT_URI"] = "http://localhost:8888/callback"
+if len(sys.argv) > 1:
+    username = sys.argv[1]
+else:
+    print("Usage: %s username" % (sys.argv[0],))
+    sys.exit()
+
+token1 = util.prompt_for_user_token(username, scope)
+
+if token1:
+    sp = spotipy.Spotify(auth=token1)
+    results = sp.current_user_saved_tracks()
+    for item in results['items']:
+        track = item['track']
+        print(track['name'] + ' - ' + track['artists'][0]['name'])
+else:
+    print("Can't get token for", username)
+"""
+#sp = SpotifyAPI()
+#user = sp.auth_curr_user('user-top-read')
+#print(sp.get_top_artists())

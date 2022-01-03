@@ -12,14 +12,17 @@ admin.site.register(Event)
 admin.site.register(Genre)
 admin.site.register(Artist_Genre)
 admin.site.register(Location)
+admin.site.register(User_Genre)
+admin.site.register(SpotifyToken)
+admin.site.register(User_Artist)
 
 
 
 # Uncomment down below
 
 # # Add items to list for more locations...
-#countries = ['Slovenia']
-#cities = ['Ljubljana']
+countries = ['Slovenia']
+cities = ['Ljubljana']
 
 
 # #if database is empty:

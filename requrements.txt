@@ -1,0 +1,9 @@
+django
+djangorestframework
+django-cors-headers
+django-filter
+markdown
+requests
+beautifulsoup4
+selenium
+spotipy

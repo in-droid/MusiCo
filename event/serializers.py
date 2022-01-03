@@ -22,10 +22,15 @@ class ArtistSerializerForEvent(serializers.Serializer):
 class VenueSerializerForEvent(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.SerializerMethodField()
+    info = serializers.SerializerMethodField()
+    
+
+
+    def get_info(self, obj):
+        return obj.info
 
     def get_name(self, obj):
         return obj.name
-
 
 
 class EventSerializer(serializers.Serializer):
