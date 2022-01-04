@@ -1,48 +1,57 @@
-from SpotifyAPI import SpotifyAPI
-import pandas as pd
-import math
-
-
 class Recommender:
-    def __init__(self):
-        self.spotify = SpotifyAPI()
-        self.data = pd.read_csv("data.csv", encoding="latin-1")
+    def __init__(self, city, country):
+        self.q = query.QueryDatabase()
+        q = self.q
+        self.loc_id = q.get_location_id(city, country)
+
+        # make a dict in the form of artist_id = [artist_genres]
+        events = q.get_eventIDs_for_location(self.loc_id)
+        self.artist_genres = []
+        self.artist_names = []
+        for event in events:
+            a_id = q.get_artistID_for_event(event)
+
+            self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
+            self.artist_names.append(q.get_artist_name(a_id))
 
     def get_user_genres(self):
-        artists = []
+        # waiting on Ivan ಠ_ಠ
+        return []
 
-        artists.append(self.spotify.get_top_artists("short_term", 25))
-        artists.append(self.spotify.get_top_artists(limit=25))
-        artists.append(self.spotify.get_top_artists("long_term", 25))
-
-        genres = set()
-        popularity = []
-        for artist_period in artists:
-            for artist in artist_period:
-                popularity.append(artist["popularity"])
-                for genre in artist["genres"]:
-                    genres.add(genre)
-
-        return (genres, popularity)
-
-    def weighing_value(self, num):
-        if num in range(0, 30):
+    # get weight based on artist popularity rating
+    @staticmethod
+    def weighing_value(rating):
+        if rating in range(0, 30):
             return 0.6
-        if num in range(30, 70):
+        if rating in range(30, 70):
             return 0.8
-        if num in range(70, 101):
+        if rating in range(70, 101):
             return 1.0
 
-    def get_scores(self, df, data):
-        user_genres = data[0]
-        artist_popularity = data[1]
-        scores = []
+    def recommend(self):
+        user_genres = self.get_user_genres()
+        spotify = base_client.SpotifyAPI()
+
+        artists_popularity = spotify.get_artists_popularity(self.artist_names)
+        scores = {}
 
         index = 0
-        for _, row in df.iterrows():
-            artist_genres = set(row['genres'].split(";"))
+        for a_id, genres in self.artist_genres:
+            artist_genres = set(genres)
 
             score = len(artist_genres.intersection(user_genres)) * \
+                self.weighing_value(artists_popularity[index])
+
+            scores[a_id] = score
+            index += 1
+
+        # returns list of tuples
+        results = sorted(scores.items(), key=lambda x: x[1])
+
+        if len(results) < 5:
+            return results
+
+        return results[:5]
                 self.weighing_value(artist_popularity[index])
 
             scores.append(score)
