@@ -106,7 +106,7 @@ def create_update_user_artists(artist, img, user):
         new_artist = Artist(name=artist, img_link=img)
         new_artist.save()
         new_input = User_Artist(user=user, artist=new_artist)
-        new_input.save()
+    new_input.save()
 
 def create_update_artist_genres(artist_name, genre_name):
     artist = Artist.objects.get(name=artist_name)

@@ -121,13 +121,19 @@ def spotify_callback(request, format=None):
 @api_view(['GET'])
 def is_spotify_auth(request):
     is_authenticated = is_spotify_authenticated(str(request.auth))
-    update_user_music(request)
+    if is_authenticated:
+        update_user_music(request)
     return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def my_profile(request):
-    response = update_user_music(request)
+    try:
+        update_user_music(request)
+        response = {'status' : 'user music updated'}
+    except:
+        response = {'error' : 'Spotify API error'}
+
     return Response(response)
  
 
