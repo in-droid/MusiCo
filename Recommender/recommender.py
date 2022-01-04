@@ -69,5 +69,5 @@ class Recommender:
         return self.get_scores(self.data, self.get_user_genres())
 
 
-rec = Recommender()
-print(rec.recommend())
+#rec = Recommender()
+#print(rec.recommend())
