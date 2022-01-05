@@ -25,7 +25,7 @@ countries = ['Slovenia']
 cities = ['Ljubljana']
 
 
-# #if database is empty:
-#if len(Artist.objects.all()) == 0:
-#    for city, country in zip(cities, countries):
-#        init.InitDatabase(city, country)
+# for city, country in zip(cities, countries):
+#     #if database is empty:
+#     if len(Location.objects.filter(country=country).filter(city=city)) == 0:
+#         init.InitDatabase(city, country)

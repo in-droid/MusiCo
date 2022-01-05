@@ -118,7 +118,7 @@ def create_update_artist_genres(artist_name, genre_name):
         new_input.save()
 
 def update_user_music(request):
-    endpoint = 'top/artists?time_range=medium_term&limit=10&offset=1'
+    endpoint = 'top/artists?time_range=short_term&limit=10&offset=1'
     response = execute_spotify_api_request(str(request.auth), endpoint, post_=False, put_=False)
     if response.get('error'):
         return response

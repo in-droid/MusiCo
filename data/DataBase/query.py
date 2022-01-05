@@ -250,3 +250,15 @@ class QueryDatabase:
             return Event.objects.get(id=eid).lid.id
         except:
             return None
+
+
+
+
+    def get_user_artists(self):
+        pass
+
+    def get_user_gernes(self, username):
+        try:
+            return [genre.gid.name for genre in User_Genre.objects.filter(uid=User.objects.get(username=username).id)]
+        except:
+            return None

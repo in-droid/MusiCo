@@ -1,22 +1,32 @@
+from data.DataBase import query
+from SpotifyAPI import base_client
+from data.models import *
+
 class Recommender:
-    def __init__(self, city, country):
+    def __init__(self, city, country, userID):
+        self.userID = userID
         self.q = query.QueryDatabase()
         q = self.q
         self.loc_id = q.get_location_id(city, country)
 
         # make a dict in the form of artist_id = [artist_genres]
         events = q.get_eventIDs_for_location(self.loc_id)
-        self.artist_genres = []
+        self.artist_genres = {}
         self.artist_names = []
         for event in events:
             a_id = q.get_artistID_for_event(event)
 
-            self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
-            self.artist_names.append(q.get_artist_name(a_id))
+            # self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
+            artist_name = q.get_artist_name(a_id)
+            try:
+                base_client.SpotifyAPI().verify_artist(artist_name)
+                self.artist_names.append(artist_name)
+                self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
+            except:
+                pass
 
     def get_user_genres(self):
-        # waiting on Ivan ಠ_ಠ
-        return []
+        return query.QueryDatabase().get_user_gernes(User.objects.get(id=self.userID).username)
 
     # get weight based on artist popularity rating
     @staticmethod
@@ -28,6 +38,7 @@ class Recommender:
         if rating in range(70, 101):
             return 1.0
 
+    # returns list of (artist_id, score)
     def recommend(self):
         user_genres = self.get_user_genres()
         spotify = base_client.SpotifyAPI()
@@ -36,7 +47,7 @@ class Recommender:
         scores = {}
 
         index = 0
-        for a_id, genres in self.artist_genres:
+        for a_id, genres in self.artist_genres.items():
             artist_genres = set(genres)
 
             score = len(artist_genres.intersection(user_genres)) * \
@@ -46,28 +57,9 @@ class Recommender:
             index += 1
 
         # returns list of tuples
-        results = sorted(scores.items(), key=lambda x: x[1])
+        results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
         if len(results) < 5:
             return results
 
         return results[:5]
-                self.weighing_value(artist_popularity[index])
-
-            scores.append(score)
-            index += 1
-
-        df["score"] = scores
-        results = df.sort_values('score', ascending=False)["name"].values
-
-        if len(results) < 5:
-            return results
-
-        return results[:5]
-
-    def recommend(self):
-        return self.get_scores(self.data, self.get_user_genres())
-
-
-#rec = Recommender()
-#print(rec.recommend())
