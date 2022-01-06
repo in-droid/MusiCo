@@ -19,7 +19,7 @@ class Recommender:
             # self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
             artist_name = q.get_artist_name(a_id)
             try:
-                base_client.SpotifyAPI().verify_artist(artist_name)
+                #base_client.SpotifyAPI().verify_artist(artist_name)
                 self.artist_names.append(artist_name)
                 self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
             except:
