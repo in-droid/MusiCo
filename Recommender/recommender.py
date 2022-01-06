@@ -3,10 +3,11 @@ from SpotifyAPI import base_client
 from data.models import *
 
 class Recommender:
-    def __init__(self, city, country, userID):
+    def __init__(self, city, userID):
         self.userID = userID
         self.q = query.QueryDatabase()
         q = self.q
+        country = q.get_location_country_by_city(city)
         self.loc_id = q.get_location_id(city, country)
 
         # make a dict in the form of artist_id = [artist_genres]
@@ -19,7 +20,7 @@ class Recommender:
             # self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
             artist_name = q.get_artist_name(a_id)
             try:
-                #base_client.SpotifyAPI().verify_artist(artist_name)
+                base_client.SpotifyAPI().verify_artist(artist_name)
                 self.artist_names.append(artist_name)
                 self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
             except:
@@ -43,7 +44,13 @@ class Recommender:
         user_genres = self.get_user_genres()
         spotify = base_client.SpotifyAPI()
 
-        artists_popularity = spotify.get_artists_popularity(self.artist_names)
+        artists_popularity = []
+        for artist_name in self.artist_names:
+            try:
+                artists_popularity.append(spotify.get_artists_popularity(artist_name))
+            except:
+                pass
+
         scores = {}
 
         index = 0

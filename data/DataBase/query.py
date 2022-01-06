@@ -252,13 +252,22 @@ class QueryDatabase:
             return None
 
 
-
-
-    def get_user_artists(self):
-        pass
+    def get_user_artists(self, username):
+        try:
+            return [artist.artist.name for artist in User_Artist.objects.filter(user=User.objects.get(username=username).id)]
+        except:
+            return None
 
     def get_user_gernes(self, username):
         try:
             return [genre.gid.name for genre in User_Genre.objects.filter(uid=User.objects.get(username=username).id)]
         except:
             return None
+
+
+    def get_location_country_by_city(self, city):
+        try:
+            return Location.objects.get(city=city).country
+        except:
+            return None 
+        
