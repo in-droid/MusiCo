@@ -15,6 +15,7 @@ admin.site.register(Location)
 admin.site.register(User_Genre)
 admin.site.register(SpotifyToken)
 admin.site.register(User_Artist)
+admin.site.register(Artist_SpotifyID)
 
 
 
@@ -25,7 +26,7 @@ countries = ['Slovenia']
 cities = ['Ljubljana']
 
 
-# for city, country in zip(cities, countries):
-#     #if database is empty:
-#     if len(Location.objects.filter(country=country).filter(city=city)) == 0:
-#         init.InitDatabase(city, country)
+for city, country in zip(cities, countries):
+     #if database is empty:
+     if len(Location.objects.filter(country=country).filter(city=city)) == 0:
+         init.InitDatabase(city, country)

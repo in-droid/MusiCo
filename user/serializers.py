@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
+from django.db.models.fields import IntegerField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -33,3 +34,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class GenreSerializer(serializers.Serializer):
+    #id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(required=True, allow_blank=True)

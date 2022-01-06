@@ -34,7 +34,8 @@ class InitDatabase:
             # Add the artist to the database
             artist_name = event.artist
             if len(Artist.objects.filter(name=artist_name)) == 0:
-                self.__Artist(name=artist_name)
+               artist = self.__Artist(name=artist_name)
+               
             self.Artist_ID = Artist.objects.get(name=artist_name)
 
             venue_info = None
@@ -71,7 +72,10 @@ class InitDatabase:
                     info = []
                     img_links = []
                     for artist_name in lineup:
-                        artist_info = WikipediaScraper.searchForArtist(artist_name)
+                        #artist_info = WikipediaScraper.searchForArtist(artist_name)
+                        artist_info = ""
+                        artist_spotifyID = base_client.SpotifyAPI().get_artist_id(artist_name)
+
                         artist_img_link = base_client.SpotifyAPI().get_artist_image(artist_name)
                         info.append(artist_info)
                         img_links.append(artist_img_link)
@@ -85,7 +89,9 @@ class InitDatabase:
                             if len(Artist_Genre.objects.filter(aid=self.Artist_ID).filter(gid=self.Genre_ID)) == 0:
                                 self.__Artist_Genre(self.Artist_ID, self.Genre_ID)
 
-                    self.__update_Artist(event.artist, info, img_links)
+                    temp_artist = self.__update_Artist(event.artist, info, img_links)
+                    temp = self.__Artist_SpotifyID(temp_artist, artist_spotifyID)
+                    print(temp)
 
                 except Exception:
                     if len(Genre.objects.filter(name='unknown')) == 0:
@@ -96,9 +102,13 @@ class InitDatabase:
                         self.__Artist_Genre(self.Artist_ID, self.Genre_ID)
             else:
                 try:
-                    artist_info = WikipediaScraper.searchForArtist(event.artist)
+                    artist_info = ""
+                    #artist_info = WikipediaScraper.searchForArtist(event.artist)
+                    artist_spotifyID = base_client.SpotifyAPI().get_artist_id(artist_name)
+
                     artist_img_link = base_client.SpotifyAPI().get_artist_image(event.artist)
-                    self.__update_Artist(event.artist, artist_info, artist_img_link)
+                    temp_artist = self.__update_Artist(event.artist, artist_info, artist_img_link)
+                    self.__Artist_SpotifyID(temp_artist, artist_spotifyID)
                     genre_names = base_client.SpotifyAPI().get_artists_genres(event.artist)
                     
                     for genre_name in genre_names:
@@ -122,10 +132,12 @@ class InitDatabase:
         artist.info = info
         artist.img_link = img_links
         artist.save()
+        return artist
 
     def __Artist(self, name, info=None, img_link=None):
         artist = Artist(name=name, info=info, img_link=img_link)
         artist.save()
+        return artist
 
     def __Venues(self, name, info=None, additional_info=None, img_link=None,):
         venues = Venue(name=name, info=info, additional_info=additional_info, img_link=img_link)
@@ -146,3 +158,8 @@ class InitDatabase:
     def __Location(self, city, country):
         location = Location(city=city, country=country)
         location.save()
+
+    def __Artist_SpotifyID(self, artist, spotifyid):
+        artist_spotifyID = Artist_SpotifyID(artist=artist, spotify_id=spotifyid)
+        artist_spotifyID.save()
+        return artist_spotifyID

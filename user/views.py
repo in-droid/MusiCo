@@ -2,8 +2,8 @@ import json
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.db import IntegrityError
-from django.http import response
-from django.shortcuts import redirect
+from django.db.models import query
+from rest_framework.generics import ListAPIView
 from rest_framework import permissions, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import ValidationError
@@ -11,8 +11,15 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from user import serializers
 from requests import Request, post
+
+
+import user
 from .utils import *
 from .credentials import *
+from data.DataBase import query
+from artist.serializers import ArtistSerializerList
+from .serializers import GenreSerializer
+from data.models import User_Artist, User_Genre, User, Genre
 
 @api_view(['GET'])
 def index(request):
@@ -130,10 +137,33 @@ def is_spotify_auth(request):
 def my_profile(request):
     try:
         update_user_music(request)
-        response = {'status' : 'user music updated'}
     except:
         response = {'error' : 'Spotify API error'}
 
-    return Response(response)
+    q = query.QueryDatabase()
+    my_artists = q.get_user_artists_obj(request.user)
+    response = ArtistSerializerList(my_artists, many=True)
+    return Response(response.data)
  
 
+class MyProfile(ListAPIView):
+    serializer_class_Artists = ArtistSerializerList
+    serializer_class_Genres = GenreSerializer
+
+    def get_queryset_Artists(self):
+        aids = User_Artist.objects.filter(user=self.request.user).values_list('artist', flat=True)
+        return [Artist.objects.get(id=aid) for aid in aids]
+    
+    def get_queryset_Genres(self):
+        gids = User_Genre.objects.filter(uid=self.request.user.id).values_list('gid', flat=True)
+        print(gids)
+        return [Genre.objects.get(id=gid) for gid in gids]
+
+    def list(self, request):
+        artists = self.serializer_class_Artists(self.get_queryset_Artists(), many=True)
+        genres = self.serializer_class_Genres(self.get_queryset_Genres(), many=True)
+
+        return Response({
+            "ARTISTS" : artists.data,
+            "GENRES" : genres.data
+        })

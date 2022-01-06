@@ -6,7 +6,7 @@ import requests
 import base64
 import datetime
 from urllib.parse import urlencode
-
+from data.DataBase import query
 
 class SpotifyAPI(object):
     access_token = None
@@ -144,6 +144,31 @@ class SpotifyAPI(object):
             artists.append(artist_id)
 
         data = urlencode({"ids": ','.join(artists)})
+        lookup_url = f"https://api.spotify.com/v1/artists/?{data}"
+        header = self.generate_headers()
+
+        r = requests.get(lookup_url, headers=header)
+        data = r.json()
+        print(data)
+        artists = data["artists"]
+
+        result = []
+        for artist in artists:
+            result.append(artist["popularity"])
+
+        return result
+
+
+    def get_artists_popularity_id(self, artists_in):
+        artist_spotifys = []
+        q = query.QueryDatabase()
+        for artist in artists_in:
+            #self.verify_artist(name)
+            artist_spotify = q.get_artist_spotify(artist)
+            if artist_spotify:
+                artist_spotifys.append(artist_spotify)
+        print(artist_spotifys)
+        data = urlencode({"ids": ','.join(artist_spotifys)})
         lookup_url = f"https://api.spotify.com/v1/artists/?{data}"
         header = self.generate_headers()
 

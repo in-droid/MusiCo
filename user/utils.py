@@ -8,6 +8,7 @@ from requests import post, put, get
 
 BASE_URL = "https://api.spotify.com/v1/me/"
 
+BASE_URL_ARTISTS = "https://api.spotify.com/v1/artists/"
 
 def get_user_tokens(rest_token):
     user_tokens = SpotifyToken.objects.filter(user=rest_token)
@@ -57,8 +58,6 @@ def refresh_spotify_token(rest_token):
         'client_secret': CLIENT_SECRET
     }).json()
 
-    print(response)
-    print("------------------------")
     access_token = response.get('access_token')
     token_type = response.get('token_type')
     expires_in = response.get('expires_in')
