@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/AllEventsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:text="Events in [city], [country]"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/EventsList"
+        android:layout_width="match_parent"
+        android:layout_height="637dp"
+        android:layout_below="@+id/allEventsUpcoming"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/allEventsUpcoming"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/AllEventsTitle"
+        android:layout_marginTop="20dp"
+        android:text="There are x upcoming events."
+        android:textSize="18sp" />
+</RelativeLayout>

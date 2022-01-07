@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/VenuePageTitle"
+        android:layout_width="match_parent"
+        android:layout_height="57dp"
+        android:text="VenueNameTemp"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/venueEventsList"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_below="@+id/venueUpcomingEvents"/>
+
+    <TextView
+        android:id="@+id/venuePageInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/VenuePageTitle"
+        android:layout_marginTop="-1dp"
+        android:text="venueInfoTemp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/venueUpcomingEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/venuePageInfo"
+        android:text="There are x upcoming events."
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"/>
+
+
+</RelativeLayout>
