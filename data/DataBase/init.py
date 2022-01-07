@@ -16,22 +16,19 @@ class InitDatabase:
             return 'Error: Must enter "city" and "country" !!'
         self.city = city
         self.country = country
-        try:
-            self.all_events = SongKickScraper.scrapeAllEvents(SongKickScraper.findLocation(self.city, self.country))
-            if len(Location.objects.filter(country=self.country).filter(city=self.city)) == 0:
-                self.__Location(city=self.city, country=self.country)
-            self.Location_ID = Location.objects.filter(country=self.country).get(city=self.city)
-            self.init_Models()
+    
+        self.all_events = SongKickScraper.scrapeAllEvents(SongKickScraper.findLocation(self.city, self.country))
+        if len(Location.objects.filter(country=self.country).filter(city=self.city)) == 0:
+            self.__Location(city=self.city, country=self.country)
+        self.Location_ID = Location.objects.filter(country=self.country).get(city=self.city)
+        self.init_Models()
 
             # For testing
-            print('Database done!')
-        except:
-            print('Events not found!')
-
-
+        print('Database done!')
  
     def init_Models(self):
         for event in self.all_events:
+            print(event)
 
             # Add the artist to the database
             artist_name = event.artist
@@ -74,7 +71,7 @@ class InitDatabase:
                     img_links = []
                     for artist_name in lineup:
                         artist_info = WikipediaScraper.searchForArtist(artist_name)
-                        
+                        print(artist_info)
                         
                         artist_spotifyID = base_client.SpotifyAPI().get_artist_id(artist_name)
 
@@ -104,8 +101,8 @@ class InitDatabase:
                         self.__Artist_Genre(self.Artist_ID, self.Genre_ID)
             else:
                 try:
-                    #artist_info = ""
-                    artist_info = WikipediaScraper.searchForArtist(event.artist)
+                    artist_info = ""
+                   # artist_info = WikipediaScraper.searchForArtist(event.artist)
                     artist_img_link = base_client.SpotifyAPI().get_artist_image(event.artist)
 
                     artist_spotifyID = base_client.SpotifyAPI().get_artist_id(artist_name)
@@ -124,7 +121,8 @@ class InitDatabase:
                         if len(Artist_Genre.objects.filter(aid=self.Artist_ID).filter(gid=self.Genre_ID)) == 0:
                             self.__Artist_Genre(self.Artist_ID, self.Genre_ID)
 
-                except Exception:
+                except Exception as e:
+                    print(e)
                     if len(Genre.objects.filter(name='unknown')) == 0:
                         self.__Genre(name='unknown')
                         

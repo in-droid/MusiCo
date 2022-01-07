@@ -43,8 +43,14 @@ def recommended_events(request):
     city = request.query_params.get('city', '')
     country = request.query_params.get('country', '')
     rec = recommender.Recommender(city, country, user)
-    artists = rec.recommend()
-   # print(artists)
+    artists_ids, _ = zip(*rec.recommend())
+    artists = []
+    for i in artists_ids:
+        artists.append(Artist.objects.get(id=i))
     
-
-    return Response({"msg" : "BUG IN THE RECOMMENDER"})
+    events = []
+    for i  in artists_ids:
+        events.append(*Event.objects.filter(aid=i))
+        
+    response = EventSerializer(events, many=True)
+    return Response(response.data)
