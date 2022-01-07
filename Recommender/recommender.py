@@ -12,15 +12,17 @@ class Recommender:
 
         # make a dict in the form of artist_id = [artist_genres]
         events = q.get_eventIDs_for_location(self.loc_id)
-        self.artist_genres = {}
+        self.artist_genres_name = {}
+        self.artist_genres_ids = {}
         for event in events:
             a_id = q.get_artistID_for_event(event)
 
-            # self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
             artist_name = q.get_artist_name(a_id)
             try:
-                base_client.SpotifyAPI().verify_artist(artist_name)
-                self.artist_genres[artist_name] = q.get_all_genres_for_artist(a_id)
+                fetched = q.get_all_genres_for_artist(a_id)
+
+                self.artist_genres_name[artist_name] = fetched
+                self.artist_genres_ids[a_id] = fetched
             except:
                 pass
 
@@ -43,11 +45,11 @@ class Recommender:
         spotify = base_client.SpotifyAPI()
 
         # dict of name: popularity
-        artists_popularity = spotify.get_artists_popularity_id(self.artist_genres.keys())
+        artists_popularity = spotify.get_artists_popularity_id(self.artist_genres_ids.keys())
 
         scores = {}
 
-        for name, genres in self.artist_genres.items():
+        for name, genres in self.artist_genres_name.items():
             artist_genres = set(genres)
 
             score = len(artist_genres.intersection(user_genres)) * \
