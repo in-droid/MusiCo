@@ -135,28 +135,24 @@ class SpotifyAPI(object):
 
         return data["genres"]
 
-     # note, works with a list as input and returns a list of values
-    def get_artists_popularity(self, names):
-        artists = []
-        for name in names:
-            self.verify_artist(name)
-            artist_id = self.get_artist_id(name)
-            artists.append(artist_id)
-
-        data = urlencode({"ids": ','.join(artists)})
-        lookup_url = f"https://api.spotify.com/v1/artists/?{data}"
+    def get_artists_popularity(self, name):
+        artist_id = self.get_artist_id(name)
+        lookup_url = f"https://api.spotify.com/v1/artists/{artist_id}"
         header = self.generate_headers()
 
         r = requests.get(lookup_url, headers=header)
         data = r.json()
+<<<<<<< HEAD
 
         artists = data["artists"]
 
         result = []
         for artist in artists:
             result.append(artist["popularity"])
+=======
+>>>>>>> origin
 
-        return result
+        return data["popularity"]
 
 
     def get_artists_popularity_id(self, artists_in):

@@ -3,7 +3,7 @@ from SpotifyAPI import base_client
 from data.models import *
 
 class Recommender:
-    def __init__(self, city, country, userID):
+    def __init__(self, city,country, userID):
         self.userID = userID
         self.q = query.QueryDatabase()
         q = self.q
