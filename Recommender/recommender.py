@@ -61,14 +61,18 @@ class Recommender:
         artists_popularity = spotify.get_artists_popularity_id(self.artists)
         scores = {}
 
-        index = 0
         for a_id, genres in self.artist_genres.items():
             artist_genres = set(genres)
-            score = len(artist_genres.intersection(user_genres)) * \
-                self.weighing_value(artists_popularity[index])
+            art_name = q.get_artist_name(a_id)
+            
+            if artists_popularity[art_name]:
+                score = len(artist_genres.intersection(user_genres)) * \
+                    self.weighing_value(artists_popularity[art_name])
+            else:
+                 score = len(artist_genres.intersection(user_genres)) * \
+                    self.weighing_value(0)
 
             scores[a_id] = score
-            index += 1
 
         # returns list of tuples
         results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
