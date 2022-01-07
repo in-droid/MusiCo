@@ -63,11 +63,13 @@ class Recommender:
 
         for a_id, genres in self.artist_genres.items():
             artist_genres = set(genres)
-            art_name = q.get_artist_name(a_id)
-            
-            if artists_popularity[art_name]:
+            art_name = query.QueryDatabase().get_artist_name(a_id)
+            # print(artists_popularity)
+            # print(query.QueryDatabase().get_artist_id(art_name), art_name)
+            artist = query.QueryDatabase().get_artist(query.QueryDatabase().get_artist_id(art_name))
+            if artists_popularity[artist]:
                 score = len(artist_genres.intersection(user_genres)) * \
-                    self.weighing_value(artists_popularity[art_name])
+                    self.weighing_value(artists_popularity[artist])
             else:
                  score = len(artist_genres.intersection(user_genres)) * \
                     self.weighing_value(0)
