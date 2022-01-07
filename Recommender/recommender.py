@@ -13,7 +13,6 @@ class Recommender:
         # make a dict in the form of artist_id = [artist_genres]
         events = q.get_eventIDs_for_location(self.loc_id)
         self.artist_genres = {}
-        self.artist_names = []
         for event in events:
             a_id = q.get_artistID_for_event(event)
 
@@ -21,8 +20,7 @@ class Recommender:
             artist_name = q.get_artist_name(a_id)
             try:
                 base_client.SpotifyAPI().verify_artist(artist_name)
-                self.artist_names.append(artist_name)
-                self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
+                self.artist_genres[artist_name] = q.get_all_genres_for_artist(a_id)
             except:
                 pass
 
@@ -44,24 +42,18 @@ class Recommender:
         user_genres = self.get_user_genres()
         spotify = base_client.SpotifyAPI()
 
-        artists_popularity = []
-        for artist_name in self.artist_names:
-            try:
-                artists_popularity.append(spotify.get_artists_popularity(artist_name))
-            except:
-                pass
+        # dict of name: popularity
+        artists_popularity = spotify.get_artists_popularity_id(self.artist_genres.keys())
 
         scores = {}
 
-        index = 0
-        for a_id, genres in self.artist_genres.items():
+        for name, genres in self.artist_genres.items():
             artist_genres = set(genres)
 
             score = len(artist_genres.intersection(user_genres)) * \
-                self.weighing_value(artists_popularity[index])
+                self.weighing_value(artists_popularity[name])
 
-            scores[a_id] = score
-            index += 1
+            scores[name] = score
 
         # returns list of tuples
         results = sorted(scores.items(), key=lambda x: x[1], reverse=True)
