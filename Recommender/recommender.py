@@ -18,7 +18,6 @@ class Recommender:
         self.artists = []
         for event in events:
             a_id = q.get_artistID_for_event(event)
-
             self.artist_genres[a_id] = q.get_all_genres_for_artist(a_id)
             artist = q.get_artist(a_id)
             artist_name = q.get_artist_name(a_id)
@@ -60,8 +59,6 @@ class Recommender:
 
         spotify.authenticate() 
         artists_popularity = spotify.get_artists_popularity_id(self.artists)
-        print(artists_popularity)
-        print(self.artist_genres.items())
         scores = {}
 
         index = 0

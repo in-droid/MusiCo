@@ -72,8 +72,8 @@ class InitDatabase:
                     info = []
                     img_links = []
                     for artist_name in lineup:
-                        #artist_info = WikipediaScraper.searchForArtist(artist_name)
-                        artist_info = ""
+                        artist_info = WikipediaScraper.searchForArtist(artist_name)
+                        #artist_info = ""
                         artist_spotifyID = base_client.SpotifyAPI().get_artist_id(artist_name)
 
                         artist_img_link = base_client.SpotifyAPI().get_artist_image(artist_name)
@@ -102,8 +102,8 @@ class InitDatabase:
                         self.__Artist_Genre(self.Artist_ID, self.Genre_ID)
             else:
                 try:
-                    artist_info = ""
-                    #artist_info = WikipediaScraper.searchForArtist(event.artist)
+                    #artist_info = ""
+                    artist_info = WikipediaScraper.searchForArtist(event.artist)
                     artist_spotifyID = base_client.SpotifyAPI().get_artist_id(artist_name)
 
                     artist_img_link = base_client.SpotifyAPI().get_artist_image(event.artist)

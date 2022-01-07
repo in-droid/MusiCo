@@ -42,8 +42,8 @@ def recommended_events(request):
     user = request.user.id
     city = request.query_params.get('city', '')
     country = request.query_params.get('country', '')
-    #rec = recommender.Recommender(city, country, user)
-    #artists = rec.recommend()
+    rec = recommender.Recommender(city, country, user)
+    artists = rec.recommend()
    # print(artists)
     
 

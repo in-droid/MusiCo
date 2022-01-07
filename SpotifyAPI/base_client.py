@@ -149,7 +149,7 @@ class SpotifyAPI(object):
 
         r = requests.get(lookup_url, headers=header)
         data = r.json()
-        print(data)
+
         artists = data["artists"]
 
         result = []
@@ -161,13 +161,18 @@ class SpotifyAPI(object):
 
     def get_artists_popularity_id(self, artists_in):
         artist_spotifys = []
+        result = {}
+        spotify_id = {}
+        artists_without_spotify = set()
         q = query.QueryDatabase()
         for artist in artists_in:
-            #self.verify_artist(name)
             artist_spotify = q.get_artist_spotify(artist)
             if artist_spotify:
+                spotify_id[artist_spotify] = artist
                 artist_spotifys.append(artist_spotify)
-        print(artist_spotifys)
+            else:
+                artists_without_spotify.add(artist)
+                
         data = urlencode({"ids": ','.join(artist_spotifys)})
         lookup_url = f"https://api.spotify.com/v1/artists/?{data}"
         header = self.generate_headers()
@@ -176,10 +181,17 @@ class SpotifyAPI(object):
         data = r.json()
         artists = data["artists"]
 
-        result = []
-        for artist in artists:
-            result.append(artist["popularity"])
 
+        for artist in artists:
+            if artist['popularity']:
+                result[spotify_id[artist["id"]]] = artist["popularity"]
+            else:
+                result[spotify_id[artist["id"]]] = 0
+
+        for a in artists_without_spotify:
+            result[a] = 0
+        
+        
         return result
 
     def auth_curr_user(self, scope):
