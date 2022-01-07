@@ -142,15 +142,12 @@ class SpotifyAPI(object):
 
         r = requests.get(lookup_url, headers=header)
         data = r.json()
-<<<<<<< HEAD
 
         artists = data["artists"]
 
         result = []
         for artist in artists:
             result.append(artist["popularity"])
-=======
->>>>>>> origin
 
         return data["popularity"]
 
