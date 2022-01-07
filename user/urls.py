@@ -17,5 +17,6 @@ urlpatterns = [
     path('spotify-auth/', views.spotify_auth, name='spotify'),
     path('spotify-callback/', views.spotify_callback, name='callback'),
     path('spotify-is-auth/', views.is_spotify_auth, name='spotify-auth-check'),
+    path('spotify-give-tokens/', views.give_tokens, name='give-tokens'),
     path('profile/', views.MyProfile.as_view(), name='profile'),
 ]

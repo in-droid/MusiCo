@@ -98,6 +98,8 @@ def spotify_auth(request, format=None):
     }).prepare().url
     return Response({'url': url}, status=status.HTTP_200_OK)
 
+
+""""
 @api_view(['GET'])
 def spotify_callback(request, format=None):
     code = request.GET.get('code')
@@ -122,8 +124,36 @@ def spotify_callback(request, format=None):
         str(request.auth), access_token, token_type, expires_in, refresh_token)
 
     return Response(str(request.auth))
+"""
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def spotify_callback(request, format=None):
+    code = request.GET.get('code')
+    error = request.GET.get('error')
 
 
+    response = post('https://accounts.spotify.com/api/token', data={
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': REDIRECT_URI,
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET
+    }).json()
+
+    access_token = response.get('access_token')
+    token_type = response.get('token_type')
+    refresh_token = response.get('refresh_token')
+    expires_in = response.get('expires_in')
+    error = response.get('error')
+
+    return Response(
+        {"access_token" : access_token,
+        "token_type" : token_type,
+        "refresh_token" : refresh_token,
+        "expires_in" : expires_in,
+        "error" : error}
+    )
 
 @api_view(['GET'])
 def is_spotify_auth(request):
@@ -132,6 +162,21 @@ def is_spotify_auth(request):
         update_user_music(request)
     return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def give_tokens(request):
+    req_body = json.loads(request.body)
+    access_token = req_body['access_token']
+    token_type = req_body['token_type']
+    refresh_token = req_body['refresh_token']
+    expires_in = req_body['expires_in']
+    error = req_body['error']
+    print(access_token, token_type, refresh_token, expires_in, error)
+    try:
+        update_or_create_user_tokens(
+            str(request.auth), access_token, token_type, expires_in, refresh_token)
+        return Response({"status" : "success"})
+    except Exception:
+        return Response({"error" : error})
 
 @api_view(['GET'])
 def my_profile(request):

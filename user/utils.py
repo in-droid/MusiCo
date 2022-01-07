@@ -98,14 +98,18 @@ def create_update_user_genres(genre, user):
 
 
 def create_update_user_artists(artist, img, user):
-    artist_ = Artist.objects.filter(name=artist)
-    if artist_ and artist_[0]:
-        new_input = User_Artist(user=user, artist=artist_[0])
-    else:
-        new_artist = Artist(name=artist, img_link=img)
-        new_artist.save()
-        new_input = User_Artist(user=user, artist=new_artist)
-    new_input.save()
+    try:
+        artist_ = Artist.objects.filter(name=artist)
+        if artist_ and artist_[0]:
+
+            new_input = User_Artist(user=user, artist=artist_[0])
+        else:
+                new_artist = Artist(name=artist, img_link=img)
+                new_artist.save()
+                new_input = User_Artist(user=user, artist=new_artist)
+        new_input.save()
+    except:
+        pass
 
 def create_update_artist_genres(artist_name, genre_name):
     artist = Artist.objects.get(name=artist_name)
