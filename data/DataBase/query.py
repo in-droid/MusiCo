@@ -19,6 +19,10 @@ class QueryDatabase:
     def get_all_venues(self):
         return {venue.id: venue.name for venue in Venue.objects.all()}
 
+
+    def get_all_venues(self):
+        return {venue: venue.name for venue in Venue.objects.all()}
+
     # Get a dictionary for all genres with KEY = genre.id and VALUE = genre.name
     def get_all_genres(self):
         return {genre.id: genre.name for genre in Genre.objects.all()}
@@ -163,6 +167,14 @@ class QueryDatabase:
             return Venue.objects.get(name=name).id
         except:
             return None
+
+
+    def get_venue_obj(self, vid):
+        try:
+            return Venue.objects.get(id=vid)
+        except:
+            return None
+
 
     # Get venue NAME by venue ID
     def get_venue_name(self, vid):

@@ -18,6 +18,23 @@ class ArtistSerializerForEvent(serializers.Serializer):
         return obj.img_link
 
 
+class VenueSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField()
+    info = serializers.CharField()
+    img_link = serializers.CharField()
+
+
+class VenueDetailSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField()
+    info = serializers.CharField()
+    img_link = serializers.CharField()
+    events = serializers.SerializerMethodField()
+
+
+    def get_events(self, obj):
+        return Event.objects.filter(vid=object.id)
 
 class VenueSerializerForEvent(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)

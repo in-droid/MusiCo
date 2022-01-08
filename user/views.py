@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from user import serializers
 from requests import Request, post
-
+from django.shortcuts import redirect
 
 import user
 from .utils import *
@@ -99,7 +99,7 @@ def spotify_auth(request, format=None):
     return Response({'url': url}, status=status.HTTP_200_OK)
 
 
-""""
+
 @api_view(['GET'])
 def spotify_callback(request, format=None):
     code = request.GET.get('code')
@@ -120,12 +120,15 @@ def spotify_callback(request, format=None):
     expires_in = response.get('expires_in')
     error = response.get('error')
 
+    
     update_or_create_user_tokens(
         str(request.auth), access_token, token_type, expires_in, refresh_token)
 
-    return Response(str(request.auth))
-"""
 
+    return Response(str(request.auth))
+
+
+"""
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])
 def spotify_callback(request, format=None):
@@ -154,7 +157,7 @@ def spotify_callback(request, format=None):
         "expires_in" : expires_in,
         "error" : error}
     )
-
+"""
 @api_view(['GET'])
 def is_spotify_auth(request):
     is_authenticated = is_spotify_authenticated(str(request.auth))

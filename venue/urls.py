@@ -11,7 +11,6 @@ router = routers.DefaultRouter()
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('<str:location>/', views.all_events, name='events'),
-    path('<int:pk>', views.venue_detail, name='detail'),
     path('', views.all_venues, name='all'),
+    path('<int:pk>', views.venue_detail, name='detail'),
     ]
