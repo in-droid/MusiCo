@@ -22,8 +22,8 @@ admin.site.register(Artist_SpotifyID)
 # Uncomment down below
 
 # # Add items to list for more locations...
-countries = ['Slovenia']
-cities = ['Ljubljana']
+countries = ['Slovenia', 'France', 'Serbia', 'Italy', 'Macedonia']
+cities = ['Ljubljana', 'Paris', 'Belgrade', 'Rome', 'Skopje']
 
 
 for city, country in zip(cities, countries):
