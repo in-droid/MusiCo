@@ -4,7 +4,15 @@
         <v-card width="70%" class="mx-auto my-10 elevation-0">
             <div class="text-center">
                 <v-row>
-                    <v-text-field :loading="loadingSearch" v-model="city" outline label="Search your location" append-icon="mdi-search" prepend-inner-icon="mdi-map-search"></v-text-field>
+                    <v-text-field :loading="loadingSearch" v-model="city" outline label="City" 
+                    append-icon="mdi-search" prepend-inner-icon="mdi-map-search"></v-text-field>
+                    
+                    <v-select
+                    v-model="country"
+                    :items="countries"
+                    label="Country"
+                    ></v-select>
+
                     <v-btn @click="getEvents" color="primary" x-large elevation="1" plain icon >
                         <v-icon>mdi-magnify</v-icon>
                     </v-btn>
@@ -35,14 +43,17 @@
                 <v-card v-if="noMovies" class="my-14 elevation-0"> 
                     <v-row>
                         <v-col>
-                            <v-img width="600" height="350" class="mx-auto" style="border-radius: 10px" src="https://www.czechuniversities.com/uploads/2020/01/3380.jpg"></v-img>
+                            <v-img width="600" height="350" class="mx-auto" style="border-radius: 10px" 
+                            src="https://www.czechuniversities.com/uploads/2020/01/3380.jpg"></v-img>
                         </v-col>
                         <v-col>
-                            <v-img width="600" height="350" class="mx-auto" style="border-radius: 10px" src="https://cdn.londonandpartners.com/visit/london-organisations/alexandra-palace/92923-640x360-alexandra-palace-gig-640.jpg"></v-img>
+                            <v-img width="600" height="350" class="mx-auto" style="border-radius: 10px" 
+                            src="https://cdn.londonandpartners.com/visit/london-organisations/alexandra-palace/92923-640x360-alexandra-palace-gig-640.jpg"></v-img>
                         </v-col>
                     </v-row>
                     <div class="text-center my-14">
-                        <h1 class="red--text text--darken-1 font-italic" style="font-family: 'Verdana'">Life is made of small moments like this!</h1>
+                        <h1 class="red--text text--darken-1 font-italic" 
+                        style="font-family: 'Verdana'">Life is made of small moments like this!</h1>
                     </div>
                 </v-card>
                 
@@ -82,7 +93,8 @@
 
                         <v-card-text class="text--primary">
 
-                        <div ><h2 class="red--text text--darken-1 my-2" style="font-family: 'Verdana'">{{ event.venue.name }}</h2></div>
+                        <div ><h2 class="red--text text--darken-1 my-2" 
+                        style="font-family: 'Verdana'">{{ event.venue.name }}</h2></div>
                         <div><h3 class="font-weight-light my-2"><v-icon >mdi-map-marker</v-icon>{{ event.venue.info }}</h3></div>
                         </v-card-text>
 
@@ -105,6 +117,9 @@ export default {
     components: {NavBar},
     data: () => ({
         country: 'Slovenia',
+        countries: [
+            'Slovenia', 'Macedonia', 'Italy', 'Serbia', 'France'
+        ],
         loadingSearch: false,
         noMovies:true,
         
